@@ -1,12 +1,9 @@
 #!/usr/bin/expect -f
 
-spawn ssh -l bandit17 -p 2220 -i bandit17.key bandit.labs.overthewire.org
+spawn ssh -l bandit17 -p 2220 bandit.labs.overthewire.org
+expect "*: "
+send "xLYVMN9WE5zQ5vHacb0sZEVqbrp7nBTn\r"
 expect "*\$ "
 
-#send "nmap -p 31000-32000 localhost | grep /tcp | cut -c 1-5\r"
-#expect "*\$ "
-
-#send "echo cluFn7wTiGryunymYOu4RcffSxQluehd | openssl s_client -quiet -host localhost -port 31790\r"
-#expect "*\$ "
-
+interact
 #send "exit\r"
