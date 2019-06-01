@@ -5,5 +5,7 @@ expect "*: "
 send "xLYVMN9WE5zQ5vHacb0sZEVqbrp7nBTn\r"
 expect "*\$ "
 
-interact
-#send "exit\r"
+send "diff passwords.old passwords.new | tail -n1\r"
+expect "*\$ "
+
+send "exit\r"
