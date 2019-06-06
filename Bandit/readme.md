@@ -1,6 +1,6 @@
 # Bandit
 
-Bandit is the beginner / tutorial challenge. It has, at time of writing, 32 levels.
+Bandit is the beginner / tutorial challenge. It has, at time of writing, 32 levels (excluding 0, and with 33 being a 'Thankyou for Playing' message).
 
 The server for bandit is at `bandit.labs.overthewire.org`, port `2220`, accessed over SSH.
 To run the scripts you need to have installed **expect**, and to have SSH'd to the bandit server at least once (so you can accept the security question about the server). 
