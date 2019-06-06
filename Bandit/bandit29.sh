@@ -5,6 +5,9 @@ expect "*: "
 send "bbc96594b4e001778eee9975372716b2\r"
 expect "*\$ "
 
+send "rm -rf /tmp/git29\r"
+expect "*\$ "
+
 send "git clone ssh://bandit29-git@localhost/home/bandit29-git/repo /tmp/git29\r"
 expect "*(yes/no)? "
 send "yes\r"
