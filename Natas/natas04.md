@@ -7,4 +7,4 @@
 
     > Referer: http://natas5.natas.labs.overthewire.org/
 
-5. Open the new request, check the response for the password for natas5.
+5. Open the new request, and check the response for the password for natas5.
