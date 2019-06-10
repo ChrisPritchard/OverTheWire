@@ -5,8 +5,6 @@ To see the site:
 1. Go to [http://natas23.natas.labs.overthewire.org](http://natas23.natas.labs.overthewire.org)
 2. Log in with natas23, D0vlad33nQF0Hz2EP255TP5wSW9ZsRSE
 
-The page will return the password if 'rehelio' is passed as a get/querystring parameter. However if the user does not contain a valid session with admin a redirect header (Location) is appended which sends the user back to the start screen.
+This page will return the password if the passwd contains the text "iloveyou" and if the text is greater than 10. The ability for these both to be true is due to PHP type juggling / eager casting: if a string starts with a number, and is compared with a number, then the starting number is parsed to a number for the comparison - the rest of the string is ignored.
 
-Firefox and some frameworks (looking at you .NET) follow 302s automatically. Curl however does not.
-
-3. To get the password, run the following command from bash: `curl --user natas22:chG9fbe1Tq2eWVMgjYYD1MsfIvN461kJ http://natas22.natas.labs.overthewire.org/?revelio`
+3. Submit `11iloveyou` as the password to get the password for natas24.
