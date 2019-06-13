@@ -20,6 +20,10 @@ The script [natas28ecb-attack.fsx](./natas28ecb-attack.fsx) does the above, also
 
 ## Exploit stage
 
-Assuming the script is something like `SELECT * FROM Jokes WHERE text LIKE '%string%'` we need to inject something like `' UNION ALL SELECT * FROM Users #`. However, as mentioned, we cannot submit a `'` to break out of the `LIKE` through the query - it would get escaped with `\'`. However HOWEVER, if we can stick the injected plaintext in such a way that the `\'` overlap a block boundary, we can copy the block with just the `'` (!), then inject this block into a simpler query to get the ' we want!!!
+Assuming the script is something like `SELECT * FROM Jokes WHERE text LIKE '%string%'` we need to inject something like `' UNION ALL SELECT password FROM Users #`. However, as mentioned, we cannot submit a `'` to break out of the `LIKE` through the query - it would get escaped with `\'`. However HOWEVER, if we can stick the injected plaintext in such a way that the `\'` overlap a block boundary, we can copy the block with just the `'` (!), then inject this block into a simpler query to get the ' we want!!!
 
 This is what [natas28exploit.fsx](./natas28exploit.fsx) does. Note, it takes as constants the blocksize and offsets calculated by the ECB attacks, so these steps don't need to be repeated. Run the script to get the password for natas29.
+
+## Summary
+
+This one was very hard, and I had to get a full tutorial to figure it out. But I learnt a lot, and all the code used is my own so I am happy.
