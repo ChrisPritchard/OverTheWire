@@ -10,3 +10,5 @@ Another exploit based on idiot perl doing idiot things, in this case the fact th
 Note: this challenge and the one previous seem to be taken directly from the black hat talks Perl Jam 2 and Perl Jam by Netanel Rubin. Fun talks. Dumb programming language.
 
 3. To get the password, run the script [natas31exploit.fsx](./natas31exploit.fsx).
+
+NOTE: with this one I had a bit of trouble getting the http request exactly right. In the end I used Burp Community Suite to do the exploit correctly once, then compared that against what I was sending (by using Burp as a proxy in my script). This eventually revealed to me that the boundary you set on the content type needs to be prepended by two dashes when used in the form data. Hmm.
