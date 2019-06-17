@@ -50,8 +50,8 @@ printfn "Krypton 3: %s" <| rot -12 "OMQEMDUEQMEK"
 // Krypton 3:
 let map = 
     [1..3] 
-    |> List.map (sprintf "./krypton/found%i" >> File.ReadAllText) 
-    |> String.concat " " |> freqDecode
+    |> List.map (sprintf "./krypton/found%i" >> File.ReadAllText >> fun s -> s.Replace (" ", "")) 
+    |> String.concat "" |> freqDecode
 let decoded = 
     "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS".ToCharArray() 
     |> Array.map (fun c -> if Map.containsKey c map then map.[c] else '?') |> String
