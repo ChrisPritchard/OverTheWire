@@ -53,3 +53,5 @@ and in there a link to the keyfile. As the `encrypt` binary runs setuid
 > ```
 
 The contents of `krypton3` in the same directory is: `OMQEMDUEQMEK`
+
+Following the instructions above, after echoing 'A' to a file, results in a ciphertext file containing 'M'. So the caesar cipher is rotating by -12, to produce `CAESARISEASY`
