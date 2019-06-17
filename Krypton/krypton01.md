@@ -29,3 +29,5 @@ the cipher text.
 > Enjoy!
 
 The contents of `krypton2` in the same directory is: `YRIRY GJB CNFFJBEQ EBGGRA`
+
+Translating this using rot13 results in `LEVEL TWO PASSWORD ROTTEN`. Note, the password is `ROTTEN`, not the full string - guess how long it took me to figure that out :D
