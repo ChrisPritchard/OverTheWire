@@ -26,15 +26,29 @@ let rot n (s: string) =
     String(buffer)
 
 let freqDecode sources (data: string) =
-    let englishFrequencyOrder = "etaoinshrdlcumwfgypbvkjxqz".ToUpper().ToCharArray ()
-    let sourcesFrequencyOrder = 
-        (sources |> Seq.map File.ReadAllText |> String.concat "").Replace(" ", "")
-        |> Seq.countBy id |> Seq.sortByDescending snd |> Seq.map fst |> Seq.toArray
-    data.Replace(" ", "").ToCharArray ()
-    |> Array.map (fun c -> 
-        let index = Array.findIndex ((=) c) sourcesFrequencyOrder
-        englishFrequencyOrder.[index])
-    |> fun (ca: char []) -> String(ca)
+    [
+        "etaoinsrhldcumfpgwybvkxjqz"
+        "eariotnslcudpmhgbfywkvxzjq"
+        "etaonisrhldcmufpgwybvkjxqz"
+        "etiaonsrhldcumfpywgbvkxjqz"
+        "etaionsrhlcdumfpgybwvkxqjz"
+        "etaohnisrdluwmcgfypvkbjxzq"
+        "etaoinsrhldcumfpgwybvkxjqz"
+        "etainoshrdlcumfwygpbvkqjxz"
+        "etaoinshrdlcumwfgypbvkjxqz"
+        "eairtonslcupmdhgbyfvwkxzqj"
+        "eisarntolcdugpmhbyfvkwzxjq"
+    ]
+    |> List.map (fun englishFrequencyOrder ->
+        let englishFrequencyOrder = englishFrequencyOrder.ToUpper().ToCharArray ()
+        let sourcesFrequencyOrder = 
+            (sources |> Seq.map File.ReadAllText |> String.concat "").Replace(" ", "")
+            |> Seq.countBy id |> Seq.sortByDescending snd |> Seq.map fst |> Seq.toArray
+        data.Replace(" ", "").ToCharArray ()
+        |> Array.map (fun c -> 
+            let index = Array.findIndex ((=) c) sourcesFrequencyOrder
+            englishFrequencyOrder.[index])
+        |> fun (ca: char []) -> String(ca))
 
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
@@ -47,4 +61,4 @@ printfn "Krypton 3: %s" <| rot -12 "OMQEMDUEQMEK"
 
 // Krypton 3:
 let decode = freqDecode ["./krypton/found1"; "./krypton/found2"; "./krypton/found3"]
-printfn "Krypton 4: %s" <| decode "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS"
+printfn "Krypton 4 options:\r\n%A" <| decode "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS"
