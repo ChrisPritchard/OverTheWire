@@ -19,7 +19,7 @@ let rot n (s: string) =
                     if rotated > maxZ 
                     then rotated - 26 
                     elif rotated < minA 
-                    then (minA - rotated) + maxZ + 1
+                    then maxZ - (minA - (rotated + 1))
                     else rotated
                 char bound
     String(buffer)
@@ -28,4 +28,4 @@ let rot n (s: string) =
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
 
 // Krypton 2:
-printfn "Krypton 2: %s" <| rot -13 "LEVEL TWO PASSWORD ROTTEN"//"YRIRY GJB CNFFJBEQ EBGGRA"
+printfn "Krypton 2: %s" <| rot 13 "YRIRY GJB CNFFJBEQ EBGGRA"
