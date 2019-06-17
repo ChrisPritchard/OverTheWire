@@ -29,3 +29,6 @@ printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
 
 // Krypton 2:
 printfn "Krypton 2: %s" <| rot 13 "YRIRY GJB CNFFJBEQ EBGGRA"
+
+// Krypton 3:
+printfn "Krypton 3: %s" <| ""

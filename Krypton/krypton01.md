@@ -2,7 +2,7 @@
 
 Password: `KRYPTONISGREAT`
 
-The readme at /krypton/README says:
+The readme at /krypton/krypton1/README says:
 
 > Welcome to Krypton!
 > 
