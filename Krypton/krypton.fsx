@@ -46,5 +46,5 @@ printfn "Krypton 2: %s" <| rot 13 "YRIRY GJB CNFFJBEQ EBGGRA"
 printfn "Krypton 3: %s" <| rot -12 "OMQEMDUEQMEK"
 
 // Krypton 3:
-let decode = freqDecode ["./krypton/found1"; "./krypton/found2"; "./krypton/found3"]
+let decode = freqDecode ["./krypton/krypton03found/found1"; "./krypton/krypton03found/found2"; "./krypton/krypton03found/found3"]
 printfn "Krypton 4: %s" <| decode "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS"
