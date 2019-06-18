@@ -10,3 +10,5 @@ The readme at /krypton/krypton5 says:
 > Enjoy.
 
 The contents of the cipher text is `BELOS Z`
+
+This task is the same as the previous, except the keylength is not known. Using [the same link](https://inventwithpython.com/hacking/chapter21.html) from the previous task, there is a description on deriving key lengths using repeated sequences. The F# script implements this, finds the keylength, then passes it to the same function used in Krypton 4. 

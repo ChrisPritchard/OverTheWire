@@ -46,7 +46,7 @@ The content of the krypton5 file is: `HCIKV RJOX`
 
 Additionally, two 'found' files have been copied locally for aid in analysis.
 
-The script contains a solution for this, that produces a set of candidate clear text options. From these its clear that the password is `CLEARTEXT`. The way the solution works is derived from the instructions read [here](), but in brief: 
+The script contains a solution for this, that produces a set of candidate clear text options. From these its clear that the password is `CLEARTEXT`. The way the solution works is derived from the instructions read [here](https://inventwithpython.com/hacking/chapter21.html), but in brief: 
 
 1. Since we already know the keylength we split one of the large "found" strings into six strips of text - each strip or substring is made of characters entirely encoded by a single character of the key. 
 2. As the character can be one of 26 characters, we try all twenty six to get different strings, then for each string we calculate how likely it is (I did this by simply checking if it contained the letter 'E' for greater than 10%.)
