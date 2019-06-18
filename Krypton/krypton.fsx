@@ -46,6 +46,26 @@ let vigenereDecode (key: string) (cipher: string) =
         rot -keyChar (string c) |> char)
     |> String
 
+let vigenereKeylength source =
+    let repeats =
+        (File.ReadAllText source).Replace (" ", "")
+        |> Seq.windowed 3
+        |> Seq.countBy id
+        |> Seq.filter (snd >> (<) 1)
+        |> Seq.map fst
+    let rec lengthsFor (repeat: string) (cipherText: string) found =
+        let start = cipherText.IndexOf(repeat)
+        if start = -1 then found
+        else
+            let next = cipherText.[start + 1..].IndexOf(repeat)
+            if next = -1 then found
+            else
+                let newFound = (next + 1)::found
+                lengthsFor repeat (cipherText.[start + next + 1..]) newFound
+    let test = "PPQCAXQVEKGYBNKMAZUYBNGBALJONITSZMJYIMVRAGVOHTVRAUCTKSGDDWUOXITLAZUVAVVRAZCVKBQPIWPOU"
+    printfn "test: %A" <| lengthsFor "VRA" test []
+    0
+
 let vigenereHack source keyLength (cipher: string) =
     let subStrings source =
         (File.ReadAllText source).Replace (" ", "")
@@ -86,3 +106,7 @@ printfn "Krypton 4: %s" <| freqDecode sources3 "KSVVW BGSJD SVSIS VXBMN YQUUK BN
 // Krypton 4:
 let sources4 = ["./Krypton/krypton04found/found1"; "./Krypton/krypton04found/found2"]
 printfn "Krypton 5 options:\r\n%A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
+
+// Krypton 5:
+let sources5 = ["./Krypton/krypton05found/found1"; "./Krypton/krypton05found/found2"; "./Krypton/krypton05found/found3"]
+printfn "Krypton 6 options:\r\n%A" <| vigenereKeylength sources5.[0]//vigenereHack sources4.[0] 6 "BELOS Z"
