@@ -39,28 +39,36 @@ let freqDecode sources (cipher: string) =
         englishFrequencyOrder.[index])
     |> String
 
-let vigenèreDecode (key: string) (cipher: string) =
+let vigenereDecode (key: string) (cipher: string) =
     cipher.Replace(" ", "").ToCharArray() 
     |> Array.mapi (fun i c ->
         let keyChar = int key.[i % key.Length] - minA
         rot -keyChar (string c) |> char)
     |> String
 
-let vigenèreHack sources keyLength (cipher: string) =
-    let subStringsFor source =
+let vigenereHack source keyLength (cipher: string) =
+    let subStrings source =
         (File.ReadAllText source).Replace (" ", "")
         |> Seq.indexed
-        |> Seq.groupBy (fun (i, _) -> i % 6)
+        |> Seq.groupBy (fun (i, _) -> i % keyLength)
         |> Seq.map (snd >> Seq.map snd >> Seq.toArray >> String)
     let isLikely keyChar (subString: string) = 
-        rot -(int keyChar) subString 
+        rot -(int keyChar - minA) subString 
         |> Seq.countBy id
         |> Map.ofSeq
-        |> fun m -> m.ContainsKey 'E' && float m.['E'] / float subString.Length > 0.12
-    let candidatesFor subString =
+        |> fun m -> m.ContainsKey 'E' && float m.['E'] / float subString.Length >= 0.10
+    let candidates subString =
         ['A'..'Z'] |> List.filter (fun c -> isLikely c subString)
-    ""
-    
+    let allCandidates source =
+        source |> subStrings |> Seq.map candidates |> Seq.toList
+    let rec keyPossibles candidates soFar =
+        match candidates with
+        | [] -> [soFar]
+        | cl::tail ->
+            cl |> List.collect (fun c -> keyPossibles tail (soFar + string c))
+    keyPossibles (allCandidates source) ""
+    |> List.map (fun key -> vigenereDecode key cipher)
+    |> List.filter (fun clearText -> Array.exists clearText.Contains dictionary)
     
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
@@ -77,4 +85,4 @@ printfn "Krypton 4: %s" <| freqDecode sources3 "KSVVW BGSJD SVSIS VXBMN YQUUK BN
 
 // Krypton 4:
 let sources4 = ["./Krypton/krypton04found/found1"; "./Krypton/krypton04found/found2"]
-printfn "Krypton 5 options:\r\n%A" <| vigenèreHack sources4 6 "HCIKV RJOX"
+printfn "Krypton 5 options:\r\n%A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
