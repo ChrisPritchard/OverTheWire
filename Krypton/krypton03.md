@@ -29,3 +29,7 @@ in the file 'krypton4'.  You have also found 3 other files.
 > Enjoy.
 
 The contents of `krypton3` in the same directory is: `KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS`. The other three cipher files have been copied locally for ease of analysis.
+
+Unfortunately, I wasn't able to break this one without a hint. Frequency analysis got me to several of the characters, but I kept looking for an automated solution when I should have used those characters to guess the rest :(
+
+Anyway, the F# script solves this using the correct key, revealing the password is `BRUTE`.
