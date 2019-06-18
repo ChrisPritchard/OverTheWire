@@ -2,13 +2,16 @@ open System
 open System.Text
 open System.IO
 
+let dictionary = File.ReadAllLines "./Krypton/dictionary.txt"
+
 let b64decode s =
     let bytes = Convert.FromBase64String s
     Encoding.ASCII.GetString bytes
 
+let minA = int 'A'
+let maxZ = int 'Z'
+
 let rot n (s: string) =
-    let minA = int 'A'
-    let maxZ = int 'Z'
     let buffer = s.ToCharArray()
     for i in [0..buffer.Length - 1] do
         buffer.[i] <-
@@ -36,6 +39,21 @@ let freqDecode sources (data: string) =
         englishFrequencyOrder.[index])
     |> fun (ca: char []) -> String(ca)
 
+let vigenèreDictionaryAttack keyLength (data: string) =
+    let concatted = data.Replace (" ", "")
+    let decode (key: string) =
+        concatted.ToCharArray ()
+        |> Array.mapi (fun i c -> 
+            let res = int c - int (key.[i % keyLength])
+            if res < minA then char (maxZ - (minA - (res + 1)))
+            else char res)
+        |> String
+    
+    dictionary 
+    |> Array.filter (fun s -> s.Length = keyLength)
+    |> Array.map decode
+    |> Array.filter (fun decoded -> dictionary |> Array.exists decoded.Contains)
+
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
 
@@ -46,5 +64,8 @@ printfn "Krypton 2: %s" <| rot 13 "YRIRY GJB CNFFJBEQ EBGGRA"
 printfn "Krypton 3: %s" <| rot -12 "OMQEMDUEQMEK"
 
 // Krypton 3:
-let decode = freqDecode ["./krypton/krypton03found/found1"; "./krypton/krypton03found/found2"; "./krypton/krypton03found/found3"]
+let decode = freqDecode ["./Krypton/krypton03found/found1"; "./Krypton/krypton03found/found2"; "./Krypton/krypton03found/found3"]
 printfn "Krypton 4: %s" <| decode "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS"
+
+// Krypton 4:
+printfn "Krypton 5 options:\r\n%A" <| vigenèreDictionaryAttack 6 "HCIKV RJOX"
