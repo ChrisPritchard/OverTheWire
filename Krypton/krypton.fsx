@@ -25,18 +25,16 @@ let rot n (s: string) =
                 char bound
     String(buffer)
 
-let freqDecode =
-    let freqCode = 
-        [|  'e';'t';'a';'o';'i';'n';'s';
-            'h';'r';'d';'l';'c';'u';'m';
-            'w';'f';'g';'y';'p';'b';'v';
-            'k';'j';'x';'q';'z' |]
-    Seq.countBy id
-    >> Seq.sortByDescending snd
-    >> Seq.mapi (fun i (c, _) -> 
-        if i < 26 then c, freqCode.[i]
-        else c, '?')
-    >> Map.ofSeq
+let freqDecode sources (data: string) =
+    let englishFrequencyOrder = "eatsorinhcldupgfwymbkvjxqz".ToUpper().ToCharArray ()
+    let sourcesFrequencyOrder = 
+        (sources |> Seq.map File.ReadAllText |> String.concat "").Replace(" ", "")
+        |> Seq.countBy id |> Seq.sortByDescending snd |> Seq.map fst |> Seq.toArray
+    data.Replace(" ", "").ToCharArray ()
+    |> Array.map (fun c -> 
+        let index = Array.findIndex ((=) c) sourcesFrequencyOrder
+        englishFrequencyOrder.[index])
+    |> fun (ca: char []) -> String(ca)
 
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
@@ -48,11 +46,5 @@ printfn "Krypton 2: %s" <| rot 13 "YRIRY GJB CNFFJBEQ EBGGRA"
 printfn "Krypton 3: %s" <| rot -12 "OMQEMDUEQMEK"
 
 // Krypton 3:
-let map = 
-    [1..3] 
-    |> List.map (sprintf "./krypton/found%i" >> File.ReadAllText >> fun s -> s.Replace (" ", "")) 
-    |> String.concat "" |> freqDecode
-let decoded = 
-    "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS".ToCharArray() 
-    |> Array.map (fun c -> if Map.containsKey c map then map.[c] else '?') |> String
-printfn "Krypton 4: %s" decoded
+let decode = freqDecode ["./krypton/found1"; "./krypton/found2"; "./krypton/found3"]
+printfn "Krypton 4: %s" <| decode "KSVVW BGSJD SVSIS VXBMN YQUUK BNWCU ANMJS"
