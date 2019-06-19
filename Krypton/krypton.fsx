@@ -39,6 +39,16 @@ let freqDecode sources (cipher: string) =
         englishFrequencyOrder.[index])
     |> String
 
+let rec isEnglish (s: string) =
+    let (fullMatches, partialMatches) =
+        dictionary
+        |> Array.filter (fun (word: string) -> s.Contains word)
+        |> Array.map (fun word -> s.Replace(word, ""))
+        |> Array.partition ((=) "")
+    if fullMatches.Length = 0 && partialMatches.Length = 0 then false
+    elif fullMatches.Length > 0 then true
+    else Array.exists isEnglish partialMatches
+
 let vigenereDecode (key: string) (cipher: string) =
     cipher.Replace(" ", "").ToCharArray() 
     |> Array.mapi (fun i c ->
@@ -102,8 +112,8 @@ let vigenereHack source keyLength (cipher: string) =
         | cl::tail ->
             cl |> List.collect (fun c -> keyPossibles tail (soFar + string c))
     keyPossibles (allCandidates source) ""
-    |> List.map (fun key -> vigenereDecode key cipher)
-    |> List.filter (fun clearText -> dictionary |> Array.exists clearText.Contains)
+    |> Seq.map (fun key -> vigenereDecode key cipher)
+    |> Seq.filter isEnglish |> Seq.distinct |> Seq.toList
     
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
@@ -120,10 +130,10 @@ printfn "Krypton 4: %s" <| freqDecode sources3 "KSVVW BGSJD SVSIS VXBMN YQUUK BN
 
 // Krypton 4:
 let sources4 = ["./Krypton/krypton04found/found1"; "./Krypton/krypton04found/found2"]
-printfn "Krypton 5 options:\r\n%A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
+printfn "Krypton 5 options: %A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
 
 // Krypton 5:
 let sources5 = ["./Krypton/krypton05found/found1"; "./Krypton/krypton05found/found2"; "./Krypton/krypton05found/found3"]
 let keyLengthOptions = vigenereKeylength sources5.[1]
-let plainTextOptions = keyLengthOptions |> List.map (fun kl -> kl, vigenereHack sources5.[0] kl "BELOS Z")
-printfn "Krypton 6 options:\r\n%A" plainTextOptions
+let plainTextOptions = keyLengthOptions |> List.collect (fun kl -> vigenereHack sources5.[0] kl "BELOS Z")
+printfn "Krypton 6 options: %A" plainTextOptions

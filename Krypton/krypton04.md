@@ -54,3 +54,5 @@ The script contains a solution for this, that produces a set of candidate clear 
 4. I added a further check that ran through the results and filtered down to those that contained a word from a dictionary file I've included.
 
 Complicated, but satisfying. Coding it all myself was worth it.
+
+Update: As part of the next solution, this solution has also been modified to filter on pure plaintext, resulting in just one candidate answer.
