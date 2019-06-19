@@ -47,13 +47,16 @@ let vigenereDecode (key: string) (cipher: string) =
     |> String
 
 let vigenereKeylength source =
+    let cipherText = (File.ReadAllText source).Replace (" ", "")
     let repeats =
-        (File.ReadAllText source).Replace (" ", "")
+        cipherText
         |> Seq.windowed 3
+        |> Seq.map String
         |> Seq.countBy id
         |> Seq.filter (snd >> (<) 1)
         |> Seq.map fst
-    let rec lengthsFor (repeat: string) (cipherText: string) found =
+        |> Seq.toArray 
+    let rec gaps (cipherText: string) found (repeat: string) =
         let start = cipherText.IndexOf(repeat)
         if start = -1 then found
         else
@@ -61,9 +64,18 @@ let vigenereKeylength source =
             if next = -1 then found
             else
                 let newFound = (next + 1)::found
-                lengthsFor repeat (cipherText.[start + next + 1..]) newFound
-    let test = "PPQCAXQVEKGYBNKMAZUYBNGBALJONITSZMJYIMVRAGVOHTVRAUCTKSGDDWUOXITLAZUVAVVRAZCVKBQPIWPOU"
-    printfn "test: %A" <| lengthsFor "VRA" test []
+                gaps (cipherText.[start + next + 1..]) newFound repeat
+    let factors n = 
+        [3..n/2] 
+        |> List.filter (fun on -> n % on = 0)
+    let allFactors =
+        repeats 
+        |> Seq.collect (gaps cipherText []) 
+        |> Seq.collect factors
+        |> Seq.groupBy id
+        |> Seq.groupBy (snd >> Seq.length)
+        |> Seq.sortByDescending fst
+        |> Seq.head |> snd
     0
 
 let vigenereHack source keyLength (cipher: string) =
@@ -88,7 +100,7 @@ let vigenereHack source keyLength (cipher: string) =
             cl |> List.collect (fun c -> keyPossibles tail (soFar + string c))
     keyPossibles (allCandidates source) ""
     |> List.map (fun key -> vigenereDecode key cipher)
-    |> List.filter (fun clearText -> Array.exists clearText.Contains dictionary)
+    |> List.filter (fun clearText -> dictionary |> Array.exists clearText.Contains)
     
 // Krypton 0:
 printfn "Krypton 1: %s" <| b64decode "S1JZUFRPTklTR1JFQVQ="
