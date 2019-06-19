@@ -72,11 +72,14 @@ let vigenereKeylength source =
         repeats 
         |> Seq.collect (gaps cipherText []) 
         |> Seq.collect factors
-        |> Seq.groupBy id
-        |> Seq.groupBy (snd >> Seq.length)
-        |> Seq.sortByDescending fst
-        |> Seq.head |> snd
-    0
+        |> Seq.toArray
+    allFactors
+    |> Seq.groupBy id
+    |> Seq.map (fun (factor, col) -> factor, Seq.length col)
+    |> Seq.groupBy snd
+    |> Seq.sortByDescending fst
+    |> Seq.head |> snd |> Seq.map fst
+    |> Seq.toList
 
 let vigenereHack source keyLength (cipher: string) =
     let subStrings source =
@@ -121,4 +124,6 @@ printfn "Krypton 5 options:\r\n%A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
 
 // Krypton 5:
 let sources5 = ["./Krypton/krypton05found/found1"; "./Krypton/krypton05found/found2"; "./Krypton/krypton05found/found3"]
-printfn "Krypton 6 options:\r\n%A" <| vigenereKeylength sources5.[0]//vigenereHack sources4.[0] 6 "BELOS Z"
+let keyLengthOptions = vigenereKeylength sources5.[1]
+let plainTextOptions = keyLengthOptions |> List.collect (fun kl -> vigenereHack sources5.[1] kl "BELOS Z")
+printfn "Krypton 6 options:\r\n%A" plainTextOptions
