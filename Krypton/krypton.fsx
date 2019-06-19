@@ -78,7 +78,7 @@ let vigenereKeylength source =
     |> Seq.map (fun (factor, col) -> factor, Seq.length col)
     |> Seq.groupBy snd
     |> Seq.sortByDescending fst
-    |> Seq.head |> snd |> Seq.map fst
+    |> Seq.take 3 |> Seq.collect (snd >> Seq.map fst)
     |> Seq.toList
 
 let vigenereHack source keyLength (cipher: string) =
@@ -125,5 +125,5 @@ printfn "Krypton 5 options:\r\n%A" <| vigenereHack sources4.[0] 6 "HCIKV RJOX"
 // Krypton 5:
 let sources5 = ["./Krypton/krypton05found/found1"; "./Krypton/krypton05found/found2"; "./Krypton/krypton05found/found3"]
 let keyLengthOptions = vigenereKeylength sources5.[1]
-let plainTextOptions = keyLengthOptions |> List.collect (fun kl -> vigenereHack sources5.[1] kl "BELOS Z")
+let plainTextOptions = keyLengthOptions |> List.map (fun kl -> kl, vigenereHack sources5.[0] kl "BELOS Z")
 printfn "Krypton 6 options:\r\n%A" plainTextOptions
