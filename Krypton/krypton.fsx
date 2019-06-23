@@ -42,7 +42,7 @@ let freqDecode sources (cipher: string) =
 let rec isEnglish (s: string) =
     let (fullMatches, partialMatches) =
         dictionary
-        |> Array.filter (fun (word: string) -> s.Contains word)
+        |> Array.filter s.Contains
         |> Array.map (fun word -> s.Replace(word, ""))
         |> Array.partition ((=) "")
     if fullMatches.Length = 0 && partialMatches.Length = 0 then false
