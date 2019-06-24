@@ -137,3 +137,14 @@ let sources5 = ["./Krypton/krypton05found/found1"; "./Krypton/krypton05found/fou
 let keyLengthOptions = vigenereKeylength sources5.[1]
 let plainTextOptions = keyLengthOptions |> List.collect (fun kl -> vigenereHack sources5.[0] kl "BELOS Z")
 printfn "Krypton 6 options: %A" plainTextOptions
+
+// Krypton 6:
+let chosenCipherText = File.ReadAllLines "./Krypton/krypton6chosenCiphertext"
+let plainText = 
+    "PNUKLYLWRQKGKBE".ToCharArray () 
+    |> Array.mapi (fun i c -> 
+        chosenCipherText 
+        |> Array.find (fun s -> s.[i + 2] = c)
+        |> fun s -> s.[0])
+    |> String
+printfn "Krypton 7: %s" plainText

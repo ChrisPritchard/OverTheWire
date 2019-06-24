@@ -66,4 +66,4 @@ The next test is to determine if a given character's cipher is based on the prev
 2. Once done, I can load the results into a script and pivot them into 30 strips of alphabets-by-index.
 3. To derive the plaintext, each character of the cipher is looked up by its index in the string mod 30 (though its less than 30 characters so mod won't be necessary), then its index in the 'alphabet' is found to derive the plaintext char: e.g. index 4 corresponds to B, and 3 to C.
 
-I encrypted the alphabet on the remote server, copying the result of `grep "" *` into the file krypton6chosenCiphertext so it could be read via the F# script. The password for Krypton7 is ``.
+I encrypted the alphabet on the remote server, copying the result of `grep "" *` into the file krypton6chosenCiphertext so it could be read via the F# script. The password for Krypton7 is `LFSRISNOTRANDOM`.
