@@ -61,3 +61,9 @@ Which exposes the repeated, 30-character token: `BFZQADVFVWHQEKPFOCUVZMCRBLZHOK`
 If do the same for 'y' the token is: `CGARBEWGWXIRFLQGPDVWANDSCMAIPL` and for 'z' it is: `DHBSCFXHXYJSGMRHQEWXBOETDNBJQM`
 
 The next test is to determine if a given character's cipher is based on the previous cipher, so I encrypted a 30 character text made up of 15 'x' followed by 15 'y' to get `BFZQADVFVWHQEKPGPDVWANDSCMAIPL`. As this matches the first and second half of the tokens above, there is no dependency on previous char, making the rest of this problem easy.
+
+1. Assuming that the plaintext for krypton7 will be the same as all the other passwords, I need to only derive the 30 character 'index keys' (the tokens above) for the characters 'A' to 'Z'.
+2. Once done, I can load the results into a script and pivot them into 30 strips of alphabets-by-index.
+3. To derive the plaintext, each character of the cipher is looked up by its index in the string mod 30 (though its less than 30 characters so mod won't be necessary), then its index in the 'alphabet' is found to derive the plaintext char: e.g. index 4 corresponds to B, and 3 to C.
+
+I encrypted the alphabet on the remote server then copied the files back to this repo in order to derive the plaintext via the F# script. The password for Krypton7 is ``.
