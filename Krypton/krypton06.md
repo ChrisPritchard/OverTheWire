@@ -48,9 +48,9 @@ Password: `RANDOM`
 
 The contents of krypton7 is `PNUKLYLWRQKGKBE`
 
-Based on the hints and the readme above, I figured I needed to get the random sequence out. If I had a list of the random numbers used, I could could reverse them on the cipher text and derive the key, given I control the plaintext. First step is to create a long file containing the results of encrypting just one character - I used 'x'.
+Based on the hints and the readme above, I figured I needed to get the random sequence out. If I had a list of the random numbers used, I could reverse them on the cipher text and derive the key, given I control the plaintext. First step is to create a long file containing the results of encrypting just one character - I used 'x'.
 
-To set this up, I had a bit of trouble. I tried using `mktemp -d` to create a working dir, but running `encrypt6` with plaintext in that folder kept complaining that it couldn't open the plaintext. A reverse technique where you operate from the random folder, and use symlinks to ensure a local copy of the keyfile is present (its owned by krypton7, so can't just be copied) didn't work either. Ultimately it looks like it was a bug of somesort: mktemp creates folders like this: `tmp.M8SztyfWDr`. If I created a folder in tmp called `chrisp` instead, it worked fine. Some parsing issue in the executable maybe?
+To set this up, I had a bit of trouble. I tried using `mktemp -d` to create a working dir, but running `encrypt6` with plaintext in that folder kept complaining that it couldn't open the plaintext. A reverse technique where you operate from the random folder, and use symlinks to ensure a local copy of the keyfile is present (its owned by krypton7, so can't just be copied) didn't work either. Ultimately it looks like it was a bug of some sort: mktemp creates folders like this: `tmp.M8SztyfWDr`. If I created a folder in tmp called `chrisp` instead, it worked fine. Some parsing issue in the executable maybe?
 
 I created the file in bash using this command: `{ for i in {1..1000}; do echo -n x; done } > plaintext`
 
@@ -60,7 +60,7 @@ Which exposes the repeated, 30-character token: `BFZQADVFVWHQEKPFOCUVZMCRBLZHOK`
 
 If do the same for 'y' the token is: `CGARBEWGWXIRFLQGPDVWANDSCMAIPL` and for 'z' it is: `DHBSCFXHXYJSGMRHQEWXBOETDNBJQM`
 
-The next test is to determine if a given character's cipher is based on the previous cipher, so I encrypted a 30 character text made up of 15 'x' followed by 15 'y' to get `BFZQADVFVWHQEKPGPDVWANDSCMAIPL`. As this matches the first and second half of the tokens above, there is no dependency on previous char, making the rest of this problem easy.
+The next test is to determine if a given character's cipher is based on the previous cipher, so I encrypted a 30 character text made up of 15 of 'x' followed by 15 of 'y' to get `BFZQADVFVWHQEKPGPDVWANDSCMAIPL`. As this matches the first and second half of the tokens above, there is no dependency on previous char, making the rest of this problem easy.
 
 1. Assuming that the plaintext for krypton7 will be the same as all the other passwords, I need to only derive the 30 character 'index keys' (the tokens above) for the characters 'A' to 'Z'.
 2. Once done, I can load the results into a script and pivot them into 30 strips of alphabets-by-index.
