@@ -59,3 +59,5 @@ This resulted in the following ciphertext: `BFZQADVFVWHQEKPFOCUVZMCRBLZHOKBFZQAD
 Which exposes the repeated, 30-character token: `BFZQADVFVWHQEKPFOCUVZMCRBLZHOK`
 
 If do the same for 'y' the token is: `CGARBEWGWXIRFLQGPDVWANDSCMAIPL` and for 'z' it is: `DHBSCFXHXYJSGMRHQEWXBOETDNBJQM`
+
+The next test is to determine if a given character's cipher is based on the previous cipher, so I encrypted a 30 character text made up of 15 'x' followed by 15 'y' to get `BFZQADVFVWHQEKPGPDVWANDSCMAIPL`. As this matches the first and second half of the tokens above, there is no dependency on previous char, making the rest of this problem easy.
