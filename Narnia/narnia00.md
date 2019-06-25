@@ -42,8 +42,10 @@ The solution was to use unix piping, never letting the characters be read or pri
 
 However, the shell immediately closes; looking at the code it starts the shell system op, but then that op is immediately disposed when the program exits in the next instruciton.
 
-The fix to get past this is to pass `cat` through in the pipe as well, keeping the shell open until cat exits. Why the following works and not a straight `cat` for the password, I don't know - the `cat` for the password seems to get executed afterwards and results in a permission denied message:
+The fix to get past this is to pass `cat` through in the pipe as well, keeping the shell open until cat exits:
 
 `{ echo -e "01234567890123456789\xef\xbe\xad\xde"; cat; } | /narnia/narnia0`
 
 Once executing the above, even though no prompt is shown, you can `cat /etc/narnia_pass/narnia1` to get the password for narnia1, `efeidiedae`
+
+Why does cat work like this? I don't know; passing `cat /etc/narnia_pass/narnia1` directly instead of cat fails with permission denied: the process closes before the second cat command is executed. Passing cat by itself however seems to keep the process open, and of course the way cat works if no arguments are passed is that it reads from standard input and echoes, kind of creating a mini shell over the inner shell.
