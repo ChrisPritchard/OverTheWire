@@ -34,7 +34,7 @@ int main(){
 
 `Scanf` is not bounds checked, the two buffers `val` and `buf` are right next to each other. By crafting a string that overflows the bounds of `buf`, we can overwrite `val` - this can be simply tested by entering a string 24 characters long: the final four will replace the contents of Val (if you enter 23 characters, you will see the null byte 00, which terminates the string, overriding the first position of the val variable (as numbers on this architecture are rendered backwards)).
 
-I ran into two problems at this point. First, copying and pasting non-printable or extended ASCII characters didn't work. deadbeef is the bytes 0xEF, 0xBE, 0xAD and 0xDE (remember its backwards), which corresponds to the hex values `▐¡╛∩`. But after trying to get those into the application, they always ended up mangled.
+I ran into two problems at this point. First, copying and pasting non-printable or extended ASCII characters didn't work. deadbeef is the bytes 0xEF, 0xBE, 0xAD and 0xDE (remember its backwards), which corresponds to the extended ASCII values `▐¡╛∩`. But after trying to get those into the application, they always ended up mangled.
 
 The solution was to use unix piping, never letting the characters be read or printed via the screen. I got a hint for this so can't take too much credit, particularly the use of `echo -e` to evaluate escape sequences: this command will feed the right data:
 
