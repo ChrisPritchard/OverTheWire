@@ -31,16 +31,10 @@ I attempted to build something sneaky like this (compiled with gcc) but it didnt
 #include <stdio.h>
 #include <stdlib.h>
 
-char* fun()
+int fun()
 {
-    char res[30];
-    FILE *fp;
-
-    fp = popen("cat /etc/narnia_pass/narnia2", "r");
-    fgets(res, 29, fp);
-    pclose(fp);
-
-    return res;
+    system("cat /etc/narnia_pass/narnia2");
+    return 0;
 }
 
 int main()
