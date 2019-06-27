@@ -1,10 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 
 int main()
 {
-    char command[] = {'c','a','t',' ','/','e','t','c','/','n','a','r','n','i','a','_','p','a','s','s','/','n','a','r','n','i','a','1',0};
-    execve(command);
+    char command[] = {'/','b','i','n','/','c','a','t',0};
+    char target[] = {'.','/','n','a','r','n','i','a','0','0','.','m','d', 0};
+    char* argv[] = { command, target };
+    char* argp[] = {};
+    execve(command, argv, argp);
 
     return 0;
 }
