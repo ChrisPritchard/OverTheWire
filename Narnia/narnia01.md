@@ -25,23 +25,8 @@ int main(){
 }
 ```
 
-I attempted to build something sneaky like this (compiled with gcc) but it didnt work:
+I attempted to build something sneaky [like this](./narnia00-failed.c) (compiled with gcc) but it didnt work. Ultimately a bit of research revealed that this is a shellcode problem: the goal is to place into the environment variable some text that is the hex encoding of legitimate machine code, so when the program casts it to a function, the function is valid.
 
-```C
-#include <stdio.h>
-#include <stdlib.h>
+Shellcode is the nickname for position-independent code, machine code that can be placed anywhere in memory and still function as intended. It needs to not depend on any stack variables, and to contain no null values (that is, to not contain the text `\x00`) so that it can function both as a full string and as machine code (the null value would prematurely terminate the string, ruining the shellcode).
 
-int fun()
-{
-    system("cat /etc/narnia_pass/narnia2");
-    return 0;
-}
-
-int main()
-{
-    setenv("EGG", &fun, 1);
-    system("/narnia/narnia1");
-
-    return 0;
-}
-```
+While its entirely possible to grab some shellcode online (e.g. from the [shellcode database](http://shell-storm.org/shellcode/)), I took this as a learning challenge and decided to write my own.
