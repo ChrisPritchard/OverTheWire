@@ -2,7 +2,6 @@
 .globl _start
 
 _start:
-    xor %eax, %eax
-    movb $1, %al
-    xor %ebx, %ebx
-    int $0x80
+    mov $2, %edi
+    mov $60, %eax
+    syscall
