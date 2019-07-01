@@ -22,4 +22,4 @@ shellcode:
 
 call_shellcode:
     call    shellcode
-    db      '/bin/sh'
+    .ascii  "/bin/sh"
