@@ -2,6 +2,8 @@
 .globl _start
 
 _start:
-    mov $2, %edi
-    mov $60, %eax
+    xor %rdi, %rdi
+    add $2, %rdi
+    xor %rax, %rax
+    add $60, %rax
     syscall
