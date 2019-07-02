@@ -37,6 +37,8 @@ Next I tried with Assembly, but ran into a problem: none of the assembly I would
 
 The next challenge was getting `execve` (the command that switches the current process with another) to run. The command takes three params, the second being an array and I struggled to get this working - bearing in mind I set myself a limit that I must write the code, and I must understand it. I could have just copied something, copied some assembly script, but I didn't want to do that. All the same, the final solution was a bit of a copout - it seems that linux doesn't actually require you to use execve properly, at least not in assembly: you can leave param two null and it works fine :) The first shell code I got working is [here in shellcode.asm](./narnia01/shellcode.asm), and was successfully tested in [this C testprog](./narnia01/testprog.c).
 
+*However*, this also didn't work: while the shellcode worked fine whenever I used my own test programs, or even compiled nearly identical test programs on the remote host with the code injected in, it failed with narnia1. I got a mix of seg faults and illegal instructions - the former I am not sure, but the latter I eventually figured out: while the machine is x86_64, the narnia1 executable *itself* is 32 bit. So I need 32 bit shellcode :(
+
 Useful resources: 
 
 - [Linux System Call Table for x86_64](https://blog.rchapman.org/posts/Linux_System_Call_Table_for_x86_64/)
