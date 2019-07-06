@@ -31,8 +31,13 @@ The buffer is 128 chars, so after 128 we have overloaded the buffer and start ov
 
 However I did discover that if I overflowed the buffer by 136 characters, the final four characters overwrote the return address from the main function. From this, after a bit of further research, I worked out that the approach might be to include the shell code in the buffer, then jump to it by overflowing the return address. Hmm.
 
-At this point I spent some time doing some learning. The following three videos from LiveOverflow were very helpful:
+At this point I spent some time doing some learning. The following three videos from LiveOverflow were very helpful (they're in a row as part of the Binary Hacking playlist):
 
 - [First Stack Buffer Overflow to modify Variable - bin 0x0C](https://www.youtube.com/watch?v=T03idxny9jE&list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN&index=13)
 - [Buffer Overflows can Redirect Program Execution - bin 0x0D](https://www.youtube.com/watch?v=8QzOC8HfOqU&list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN&index=14)
 - [First Exploit! Buffer Overflow with Shellcode - bin 0x0E](https://www.youtube.com/watch?v=HSlhY4Uy8SA&list=PLhixgUqwRTjxglIswKp9mpkfPNfHkzyeN&index=15)
+
+On top of that, the original article by AlephOne on stack overflows fills in the missing pieces, and is excellent:
+
+[Smashing The Stack For Fun And Profit](http://phrack.org/issues/49/14.html#article)
+
