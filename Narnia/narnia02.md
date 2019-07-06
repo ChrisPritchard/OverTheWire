@@ -41,3 +41,6 @@ On top of that, the original article by AlephOne on stack overflows fills in the
 
 [Smashing The Stack For Fun And Profit](http://phrack.org/issues/49/14.html#article)
 
+## Steps
+
+The buffer size is 128. I am going to insert the shellcode from narnia1 I came up with, prefixed with NOP instructions and post fixed with a return address that attempts to force the program to jump back into the buffer when it returns from main.
